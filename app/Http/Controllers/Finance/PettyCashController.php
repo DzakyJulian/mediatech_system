@@ -42,14 +42,51 @@ class PettyCashController extends Controller
 
     public function create(): View
     {
-        return view('finance.petty-cash.create');
+        $bankAccounts = \App\Models\Finance\BankAccount::active()->orderBy('account_code')->get();
+        
+        return view('finance.petty-cash.create', [
+            'bankAccounts' => $bankAccounts,
+        ]);
     }
 
     public function store(StorePettyCashRequest $request): RedirectResponse
     {
-        // Implementation will be added
+        $data = $request->validated();
+        
+        $data['transaction_number'] = $this->generateTransactionNumber();
+        $data['recorded_by'] = auth()->id();
+        $data['status'] = 'Draft';
+        
+        // Handle file upload
+        if ($request->hasFile('proof')) {
+            $data['proof_file_path'] = $request->file('proof')->store('petty-cash-proofs', 'private');
+        } else {
+            $data['proof_file_path'] = '';
+        }
+        
+        PettyCashTransaction::create($data);
+        
         return redirect()->route('petty-cash.index')
             ->with('success', 'Transaksi petty cash berhasil dibuat.');
+    }
+
+    private function generateTransactionNumber(): string
+    {
+        $year = now()->format('Y');
+        $prefix = 'PC-' . $year . '-';
+        
+        $lastNumber = PettyCashTransaction::where('transaction_number', 'like', $prefix . '%')
+            ->orderByDesc('transaction_number')
+            ->value('transaction_number');
+        
+        if ($lastNumber) {
+            $lastSeq = (int) substr($lastNumber, strlen($prefix));
+            $nextSeq = $lastSeq + 1;
+        } else {
+            $nextSeq = 1;
+        }
+        
+        return $prefix . str_pad($nextSeq, 3, '0', STR_PAD_LEFT);
     }
 
     public function show(string $id): View

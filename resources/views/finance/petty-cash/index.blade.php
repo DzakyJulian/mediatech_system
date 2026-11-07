@@ -14,7 +14,7 @@
                     class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0d21a1] px-[14px] py-[10px] text-[12px] font-bold text-white transition hover:bg-[#091772]"><svg
                         class="h-4 w-4 fill-none stroke-current" aria-hidden="true">
                         <use href="#i-plus"></use>
-                    </svg>Catat petty cash</a>
+                    </svg>Catat transaksi</a>
             @endcan
         </div>
         <p class="mt-[6px] max-w-2xl text-[14px] leading-relaxed text-[#737373]">Catat pemasukan dan pengeluaran operasional manual. Pembayaran customer tetap masuk dari proses Payment tervalidasi.</p>
