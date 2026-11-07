@@ -80,4 +80,35 @@
     --color-error-50: #fff0ef;
 }
 
+/* Print: hide sidebar, navbar, buttons, filters, pagination */
+@media print {
+    aside,
+    header,
+    .page-head > div:last-child,
+    form,
+    .flex.justify-end,
+    [class*="pagination"],
+    .border-t.border-neutral-100,
+    button,
+    a.inline-flex,
+    label[for="sidebar-toggle"] {
+        display: none !important;
+    }
+    body {
+        background: white !important;
+    }
+    main {
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+    section {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    table {
+        min-width: 100% !important;
+    }
+}
+
 

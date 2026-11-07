@@ -5,23 +5,23 @@
 @section('page_breadcrumb', 'Administration / User Management')
 
 @section('content')
-    <div class="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-start">
-        <div>
-            <div class="mb-[7px] text-[12px] font-bold text-[#0d21a1]">Administration</div>
+    <div class="mb-6">
+        <div class="mb-[7px] text-[12px] font-bold text-[#0d21a1]">Administration</div>
+        <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <h1 class="m-0 text-[24px] font-extrabold leading-tight tracking-[-0.8px] text-[#171717] sm:text-[25px]">User
                 Management</h1>
-            <p class="mt-[6px] max-w-2xl text-[12px] leading-relaxed text-[#737373]">Kelola akun dan role dengan prinsip
-                least privilege. Role Admin tidak otomatis memiliki hak approval transaksi.</p>
+            @if (auth()->user()?->isSuperAdmin() &&
+                    auth()->user()?->can('users.create') &&
+                    auth()->user()?->can('users.assign_roles'))
+                <a href="{{ route('admin.users.create') }}"
+                    class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0d21a1] px-[14px] py-[10px] text-[12px] font-bold text-white transition hover:bg-[#091772]"><svg
+                        class="h-4 w-4 fill-none stroke-current" aria-hidden="true">
+                        <use href="#i-plus"></use>
+                    </svg>Tambah pengguna</a>
+            @endif
         </div>
-        @if (auth()->user()?->isSuperAdmin() &&
-                auth()->user()?->can('users.create') &&
-                auth()->user()?->can('users.assign_roles'))
-            <a href="{{ route('admin.users.create') }}"
-                class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0d21a1] px-[14px] py-[10px] text-[12px] font-bold text-white transition hover:bg-[#091772]"><svg
-                    class="h-4 w-4 fill-none stroke-current" aria-hidden="true">
-                    <use href="#i-plus"></use>
-                </svg>Tambah pengguna</a>
-        @endif
+        <p class="mt-[6px] max-w-2xl text-[12px] leading-relaxed text-[#737373]">Kelola akun dan role dengan prinsip
+            least privilege. Role Admin tidak otomatis memiliki hak approval transaksi.</p>
     </div>
 
     <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
@@ -74,10 +74,8 @@
 
         @can('users.export')
             <div class="flex justify-end px-4 pt-3"><a href="{{ route('admin.users.export', request()->query()) }}"
-                    class="inline-flex items-center gap-2 rounded-lg border border-[#dedfe6] bg-white px-3 py-[8px] text-[11px] font-semibold text-[#525252] transition hover:bg-[#f5f6fb]"><svg
-                        class="h-4 w-4 fill-none stroke-current" aria-hidden="true">
-                        <use href="#i-download"></use>
-                    </svg>Ekspor Excel/CSV</a></div>
+                    class="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-[8px] text-[11px] font-semibold text-neutral-600 transition hover:bg-neutral-50"><svg
+                        class="h-4 w-4 fill-none stroke-current" aria-hidden="true" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v11m0 0 4-4m-4 4-4-4M5 20h14"/></svg>Ekspor Excel / CSV</a></div>
         @endcan
 
         <div class="overflow-x-auto">

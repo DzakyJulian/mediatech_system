@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
+use App\Models\Finance\CashTransaction;
 use App\Services\Finance\CashFlowQueryService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -34,6 +35,16 @@ class CashFlowController extends Controller
             'summary' => $summary,
             'months' => $months,
             'filters' => $filters,
+        ]);
+    }
+
+    public function show(CashTransaction $cashTransaction): View
+
+    {
+        $cashTransaction->load(["bankAccount", "recordedBy"]);
+
+        return view("finance.cash-flow.detail", [
+            "tx" => $cashTransaction,
         ]);
     }
 
@@ -73,7 +84,7 @@ class CashFlowController extends Controller
             $query->chunkById(500, function ($rows) use ($output) {
                 foreach ($rows as $row) {
                     $amount = (float) $row->amount;
-                    $prefix = $amount > 0 ? '+' : '−';
+                    $prefix = $amount > 0 ? '+' : 'âˆ’';
                     $formattedAmount = $prefix . ' ' . number_format(abs($amount), 2, ',', '.');
 
                     $ref = '';
