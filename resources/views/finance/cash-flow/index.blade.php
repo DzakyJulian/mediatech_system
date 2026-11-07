@@ -5,19 +5,10 @@
 @section('page_breadcrumb', 'Finance / Cash Flow')
 
 @section('content')
-    <div class="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-start">
-        <div>
-            <div class="mb-[7px] text-[12px] font-bold text-[#0d21a1]">Finance workspace</div>
-            <h1 class="m-0 text-[31px] font-semibold leading-tight tracking-[-0.8px] text-[#171717] sm:text-[31px]">Cash Flow</h1>
-            <p class="mt-[6px] max-w-2xl text-[14px] leading-relaxed text-[#737373]">Pencatatan sederhana kas masuk dan keluar — bukan sistem akuntansi penuh.</p>
-        </div>
-        @can('petty_cash.create')
-            <a href="{{ \Illuminate\Support\Facades\Route::has('petty-cash.index') ? route('petty-cash.index') : url('/petty-cash') }}"
-                class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0d21a1] px-[14px] py-[10px] text-[12px] font-bold text-white transition hover:bg-[#091772]"><svg
-                    class="h-4 w-4 fill-none stroke-current" aria-hidden="true">
-                    <use href="#i-plus"></use>
-                </svg>Catat petty cash</a>
-        @endcan
+    <div class="mb-6">
+        <div class="mb-[7px] text-[12px] font-bold text-[#0d21a1]">Finance workspace</div>
+        <h1 class="m-0 text-[31px] font-semibold leading-tight tracking-[-0.8px] text-[#171717] sm:text-[31px]">Cash Flow</h1>
+        <p class="mt-[6px] max-w-2xl text-[14px] leading-relaxed text-[#737373]">Pencatatan sederhana kas masuk dan keluar — bukan sistem akuntansi penuh.</p>
     </div>
 
     <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
@@ -72,7 +63,7 @@
                 <option value="MANUAL" @selected(request('source') === 'MANUAL')>Manual</option>
             </select>
 
-            <select id="cash-status-filter" name="status" aria-label="Filter status"
+<select id="cash-status-filter" name="status" aria-label="Filter status"
                 class="h-[36px] w-full rounded-lg border border-neutral-200 bg-white px-3 text-[12px] text-neutral-600 sm:w-[140px]">
                 <option value="">Semua status</option>
                 <option value="Posted" @selected(request('status') === 'Posted')>Posted</option>
@@ -81,15 +72,18 @@
 
             <a href="{{ route('cash-flow.index') }}"
                 class="inline-flex h-[36px] items-center justify-center rounded-lg border border-neutral-200 bg-white px-3 text-[11px] font-semibold text-neutral-600 hover:bg-neutral-50">Reset</a>
-        </form>
 
-        @can('cash_flow.export')
-            <div class="flex justify-end px-4 pt-3"><a href="{{ route('cash-flow.export', request()->query()) }}"
-                    class="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-[8px] text-[11px] font-semibold text-neutral-600 transition hover:bg-neutral-50"><svg
-                        class="h-4 w-4 fill-none stroke-current" aria-hidden="true">
-                        <use href="#i-download"></use>
-                    </svg>Ekspor Excel/CSV</a></div>
-        @endcan
+            @can('cash_flow.export')
+                <span class="ml-auto flex gap-2">
+                    <a href="{{ route('cash-flow.export', request()->query()) }}"
+                        class="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 h-[36px] text-[11px] font-semibold text-neutral-600 transition hover:bg-neutral-50">
+                        <svg class="h-4 w-4 fill-none stroke-current" aria-hidden="true" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v11m0 0 4-4m-4 4-4-4M5 20h14"/></svg>Ekspor Excel / CSV</a>
+                    <button type="button" onclick="window.print()"
+                        class="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 h-[36px] text-[11px] font-semibold text-neutral-600 transition hover:bg-neutral-50"><svg
+                            class="h-4 w-4 fill-none stroke-current" aria-hidden="true" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>Cetak / Simpan PDF</button>
+                </span>
+            @endcan
+        </form>
 
         <div class="overflow-x-auto">
             <table class="w-full min-w-[960px] border-collapse text-left">
@@ -98,39 +92,26 @@
                         <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">No. transaksi</th>
                         <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">Tanggal</th>
                         <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">Jenis</th>
-                        <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">Sumber</th>
                         <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">Kategori</th>
                         <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">Keterangan</th>
-                        <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">Referensi</th>
                         <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">Nominal</th>
                         <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">Status</th>
-                        <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">Dicatat oleh</th>
-                        <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">Rekening bank</th>
+                        <th class="border-b border-neutral-200 px-4 py-3 text-[11px] font-bold text-neutral-500">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($transactions as $tx)
                         <tr class="transition hover:bg-[#fcfcfe]">
-                            <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] font-mono font-bold text-primary-500">{{ $tx->transaction_number }}</td>
+                            <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] font-sans font-bold text-primary-500">{{ $tx->transaction_number }}</td>
                             <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] text-neutral-600">{{ $tx->transaction_date?->format('d M Y') ?? '' }}</td>
                             <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] font-medium">
                                 @php $type = $tx->transaction_type?->value ?? $tx->transaction_type ?? '' @endphp
-                                <span class="inline-flex items-center gap-[5px] rounded-[5px] px-2 py-1 text-[10px] font-extrabold {{ $type === 'Cash In' ? 'bg-success-50 text-success-500' : 'bg-neutral-50 text-neutral-700' }}"><span
+                                <span class="inline-flex items-center gap-[5px] rounded-[5px] px-2 py-1 text-[10px] font-semibold {{ $type === 'Cash In' ? 'bg-success-50 text-success-500' : 'bg-neutral-50 text-neutral-700' }}"><span
                                         class="h-[5px] w-[5px] rounded-full bg-current"></span>{{ $type }}</span>
                             </td>
-                            <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] text-neutral-600">{{ $tx->source_type?->label() ?? $tx->source_type ?? '' }}</td>
                             <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] text-neutral-600 max-w-[180px] truncate">{{ $tx->category }}</td>
                             <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] text-neutral-600 max-w-[200px] truncate" title="{{ $tx->description }}">{{ $tx->description }}</td>
-                            <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] font-mono text-neutral-500">
-                                @if ($tx->source_type?->value === 'PAYMENT' && $tx->payment_id)
-                                    PAY-{{ $tx->payment_id }}
-                                @elseif ($tx->source_type?->value === 'PETTY_CASH' && $tx->petty_cash_id)
-                                    PC-{{ $tx->petty_cash_id }}
-                                @else
-                                    MANUAL
-                                @endif
-                            </td>
-                            <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] font-mono {{ $tx->amount > 0 ? 'text-success-500' : 'text-neutral-700' }}">{{ $tx->amount > 0 ? '+' : '−' }} {{ number_format(abs((float) $tx->amount), 2, ',', '.') }}</td>
+                            <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] font-sans {{ $tx->amount > 0 ? 'text-success-500' : 'text-neutral-700' }}">{{ $tx->amount > 0 ? '+' : '−' }} {{ number_format(abs((float) $tx->amount), 2, ',', '.') }}</td>
                             <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px]">
                                 @php
                                     $status = $tx->status?->value ?? $tx->status ?? '';
@@ -140,15 +121,17 @@
                                         default => 'bg-neutral-50 text-neutral-500',
                                     };
                                 @endphp
-                                <span class="inline-flex items-center gap-[5px] rounded-[5px] px-2 py-1 text-[10px] font-extrabold {{ $statusClass }}"><span
+                                <span class="inline-flex items-center gap-[5px] rounded-[5px] px-2 py-1 text-[10px] font-semibold {{ $statusClass }}"><span
                                         class="h-[5px] w-[5px] rounded-full bg-current"></span>{{ $status }}</span>
                             </td>
-                            <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] text-neutral-600">{{ $tx->recordedBy?->name ?? '' }}</td>
-                            <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px] font-mono text-neutral-500">{{ $tx->bankAccount?->account_code ?? '' }}</td>
+                            <td class="border-b border-neutral-100 px-4 py-[13px] text-[12px]">
+                                <a href="{{ route('cash-flow.show', $tx->cash_transaction_id) }}"
+                                    class="text-[11px] font-semibold text-[#0d21a1] hover:underline">Detail</a>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="11" class="px-4 py-12 text-center">
+                            <td colspan="7" class="px-4 py-12 text-center">
                                 <p class="text-[12px] font-bold text-neutral-500">Tidak ada transaksi kas.</p>
                                 <p class="mt-1 text-[11px] text-neutral-400">Ubah kata kunci atau filter untuk melihat data lain.</p>
                             </td>
@@ -203,3 +186,5 @@
         })();
     </script>
 @endpush
+
+

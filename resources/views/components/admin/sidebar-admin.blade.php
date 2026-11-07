@@ -2,7 +2,7 @@
     class="fixed inset-y-0 left-0 z-40 flex w-[248px] -translate-x-full flex-col border-r border-neutral-200 bg-white transition-transform duration-200 ease-out peer-checked/sidebar-toggle:translate-x-0 min-[768px]:translate-x-0"
     aria-label="Navigasi utama">
     <a href="{{ route('dashboard') }}"
-        class="flex shrink-0 items-center gap-[11px] border-b border-[#f0f1f5] px-5 py-[22px] no-underline">
+        class="flex shrink-0 items-center gap-[11px] border-b border-neutral-200 px-5 h-[68px] no-underline">
         <img src="{{ asset('images/meditech-logo.jpg') }}" alt="Logo Meditech Cipta Inovasi"
             class="h-[40px] w-[62px] shrink-0 rounded-md object-contain">
         <span class="min-w-0">

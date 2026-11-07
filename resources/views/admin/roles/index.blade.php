@@ -3,20 +3,20 @@
 @section('page_title', 'Manajemen Role')
 @section('page_breadcrumb', 'Administration / Manajemen Role')
 @section('content')
-    <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
-        <div>
-            <div class="mb-[7px] text-[10px] font-extrabold uppercase tracking-[1.3px] text-[#0d21a1]">Administration</div>
+    <div class="mb-6">
+        <div class="mb-[7px] text-[10px] font-extrabold uppercase tracking-[1.3px] text-[#0d21a1]">Administration</div>
+        <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <h1 class="text-[25px] font-extrabold tracking-[-0.8px] text-[#171717]">Manajemen Role</h1>
-            <p class="mt-1 max-w-2xl text-[12px] leading-relaxed text-[#737373]">Atur role dan permission berdasarkan modul
-                serta operasi. Role bawaan sistem tidak dapat dihapus.</p>
+            @can('role_management.create')
+                <a href="{{ route('admin.roles.create') }}"
+                    class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0d21a1] px-[14px] py-[10px] text-[12px] font-bold text-white transition hover:bg-[#091772]"><svg
+                        class="h-4 w-4 fill-none stroke-current" aria-hidden="true">
+                        <use href="#i-plus"></use>
+                    </svg>Tambah role</a>
+            @endcan
         </div>
-        @can('role_management.create')
-                    <a href="{{ route('admin.roles.create') }}"
-                class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0d21a1] px-[14px] py-[10px] text-[12px] font-bold text-white transition hover:bg-[#091772]"><svg
-                    class="h-4 w-4 fill-none stroke-current" aria-hidden="true">
-                    <use href="#i-plus"></use>
-                </svg>Tambah role</a>
-        @endcan
+        <p class="mt-1 max-w-2xl text-[12px] leading-relaxed text-[#737373]">Atur role dan permission berdasarkan modul
+            serta operasi. Role bawaan sistem tidak dapat dihapus.</p>
     </div>
     <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <div class="rounded-xl border border-[#e8eaf0] bg-white p-4">
